@@ -1,3 +1,4 @@
+CREATE DATABASE `spotify`;
 CREATE TABLE `spotify`.`users` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(25) NOT NULL,

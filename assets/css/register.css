@@ -64,6 +64,8 @@ body
 #inputContainer input[type="password"]
 {
     display: block;
+    border: none;
+    outline: none;
     background-color: transparent;
     border: 0;
     border-bottom: 1px solid #fefeff;
