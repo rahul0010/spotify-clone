@@ -11,7 +11,7 @@
     {
         $inputText = strip_tags($inputText);
         $inputText = str_replace(" ","",$inputText);
-        $firstName = ucfirst(strtolower($firstName));
+        $inputText = ucfirst(strtolower($inputText));
         return $inputText;
     }
 
@@ -34,6 +34,7 @@
         $wasSuccessfull = $account->register($username, $firstName, $lastName, $email, $email2, $password, $password2);
         if($wasSuccessfull)
         {
+            $_SESSION["userLoggedIn"] = $username;
             header("location: index.php");
         }
     }
