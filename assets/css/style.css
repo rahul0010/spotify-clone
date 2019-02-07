@@ -10,6 +10,8 @@
 html,
 body
 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
     height: 100%;
     box-sizing: border-box;
 }
@@ -49,6 +51,7 @@ body
 #nowPlayingBar .content
 {
     width: 100%;
+    height: 57px;
 }
 
 .buttons
@@ -57,7 +60,7 @@ body
     display: table;
 }
 
-.buttons .controlButton
+.controlButton
 {
     background-color: transparent;
     border: none;
@@ -66,9 +69,10 @@ body
 
 .controlButton img
 {
-    margin: 5px;
+    /* margin: 5px; */
     width: 20px;
     height: 20px;
+    margin: 0 5px;
 }
 
 .controlButton.play img,
@@ -82,4 +86,162 @@ body
 .controlButton:hover
 {
     cursor: pointer;
+}
+
+.playbackBar
+{
+    display: flex;
+    align-items: center;
+}
+
+.progressTime
+{
+    color: #a0a0a0;
+    font-size: 11px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.progressBar
+{
+    width: 100%;
+    height: 12px;
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.progressBarBg
+{
+    background-color: #404040;
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+}
+
+.progress
+{
+    background-color: #a0a0a0;
+    height: 4px;
+    width: 0;
+    border-radius: 2px;
+}
+
+.playbackBar .progressBar
+{
+    margin-top: 8px;
+}
+
+.albumArtwork
+{
+    height: 100%;
+    max-width: 57px;
+    margin-right: 15px;
+    float: left;
+    background-size: cover;
+}
+
+.trackInfo
+{
+    display: table;
+}
+
+#nowPlayingLeft .trackInfo .trackName
+{
+    margin: 6px 0;
+    display: inline-block;
+    width: 100%;
+}
+
+#nowPlayingLeft .trackInfo .artist
+{
+    font-size: 12px;
+    color: #a0a0a0;
+}
+
+.volumebar
+{
+    position: absolute;
+    right: 80px;
+    display: flex;
+    align-items: center;
+}
+
+.volumebar .progressBar
+{
+    width: 125px;
+}
+
+#nowPlayingRight
+{
+    position: relative;
+    margin-top: 15px;
+}
+
+#topContainer
+{
+    min-height: 100%;
+    width: 100%;
+}
+
+#navBarContainer
+{
+    background-color: #0e0e0e;
+    width: 220px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.navBar
+{
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo
+{
+    margin-bottom: 15px;
+}
+.logo img
+{
+    width: 32px;
+}
+
+.icon
+{
+    position: absolute;
+    right: 0;
+    top: 5px;
+    width: 25px;
+}
+
+.navItem
+{
+    position: relative;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 400;
+    display: block;
+    letter-spacing: 1px;
+}
+
+.navItemLink
+{
+    color: #a0a0a0;
+    text-decoration: none;
+    transition: all .2s;
+    font-weight: 600;
+}
+
+.navItemLink:hover
+{
+    color: #fefefe;
+}
+
+.group
+{
+    border-top: 1px solid #a0a0a0;
+    padding: 10px 0;
 }
