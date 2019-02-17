@@ -54,6 +54,17 @@ class Album
         return mysqli_num_rows($query);
     }
 
+    public function getSongIds()
+    {
+        $query = mysqli_query($this->con, "select id from songs where album = '$this->id' order by albumOrder");
+        $arr = array();
+        while($row = mysqli_fetch_array($query))
+        {
+            array_push($arr, $row["id"]);
+        }
+        return $arr;
+    }
+
 }
 
 ?>

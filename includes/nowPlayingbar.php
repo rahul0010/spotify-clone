@@ -1,3 +1,30 @@
+<?php
+    $resultArray = array();
+    $songQuery = mysqli_query($con, "select id from songs order by rand() limit 10");
+    while($row = mysqli_fetch_array($songQuery))
+    {
+        array_push($resultArray, $row["id"]);
+    }
+    $jsonArray = json_encode($resultArray);
+?>
+
+<script>
+    
+    $(document).ready(()=>{
+        currentPlaylist.push(...<?php echo $jsonArray; ?>)
+        audioElement = new Audio();
+        setTrack(currentPlaylist[0], currentPlaylist, false);
+    });
+
+    const setTrack = (trackId, newPlaylist, play) => {
+        audioElement.setTrack("assets/music/bensound-anewbeginning.mp3");
+        if(play)
+        {
+            audioElement.play();
+        }
+    }
+</script>
+
 <div id="nowPlayingBarContainer">
     <div id="nowPlayingBar">
         <div id="nowPlayingLeft">
