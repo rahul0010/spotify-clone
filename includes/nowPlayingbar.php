@@ -14,14 +14,53 @@
         currentPlaylist.push(...<?php echo $jsonArray; ?>)
         audioElement = new Audio();
         setTrack(currentPlaylist[0], currentPlaylist, false);
+
+        $(".playbackBar .progressBar").mouseDown(() => {
+            mouseDown = true;
+        })
+
+        $(".playbackBar .progressBar").mouseMove((e) => {
+            if(mouseDown)
+            {
+                // set time of song
+            }
+        })
     });
 
     const setTrack = (trackId, newPlaylist, play) => {
-        audioElement.setTrack("assets/music/bensound-anewbeginning.mp3");
-        if(play)
+        $.post('includes/handlers/ajax/getSongJson.php',{ songId: trackId }, (data) => {
+            var track = JSON.parse(data);
+            $(".trackName span").text(track.title);
+            audioElement.setTrack(track);
+
+            $.post('includes/handlers/ajax/getArtistJson.php',{ artistId: track.artist }, (data) => {
+                var artist = JSON.parse(data);
+                $(".artist span").text(artist.name);
+            });
+
+            $.post('includes/handlers/ajax/getAlbumJson.php',{ albumId: track.album }, (data) => {
+                var album = JSON.parse(data);
+                $(".albumLink img").attr('src',album.artworkPath);
+            });
+            
+        });
+    }
+
+    const playSong = () => {
+
+        if(audioElement.audio.currentTime == 0)
         {
-            audioElement.play();
+            $.post("includes/handlers/ajax/updatePlays.php", {songId: audioElement.currentPlaying.id});
         }
+        $(".controlButton.play").hide();
+        $(".controlButton.pause").show();
+        audioElement.play();
+    }
+
+    const pauseSong = () => {
+        $(".controlButton.pause").hide();
+        $(".controlButton.play").show();
+        audioElement.pause();
     }
 </script>
 
@@ -30,14 +69,14 @@
         <div id="nowPlayingLeft">
             <div class="content">
                 <span class="albumLink">
-                    <img src="https://androidapkcloud.com/wp-content/uploads/2017/09/Square-PhotoWithout.png" alt="" class="albumArtwork">
+                    <img alt="" class="albumArtwork">
                 </span>
                 <div class="trackInfo">
                     <span class="trackName">
-                        <span>Happy Birthday</span>
+                        <span></span>
                     </span>
                     <span class="artist">
-                        <span>Rahul Bharati</span>
+                        <span></span>
                     </span>
                 </div>
             </div>
@@ -51,10 +90,10 @@
                     <button class="controlButton previous" title="Previous">
                         <img src="./assets/images/icons/previous.png" alt="Previous">
                     </button>
-                    <button class="controlButton play" title="Play">
+                    <button class="controlButton play" title="Play" onclick="playSong();">
                         <img src="./assets/images/icons/play.png" alt="Play">
                     </button>
-                    <button class="controlButton pause" title="Pause" style="display: none">
+                    <button class="controlButton pause" title="Pause" style="display: none" onclick="pauseSong();">
                         <img src="./assets/images/icons/pause.png" alt="Pause">
                     </button>
                     <button class="controlButton next" title="Next">
