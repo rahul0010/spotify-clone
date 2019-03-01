@@ -14,18 +14,64 @@
         currentPlaylist.push(...<?php echo $jsonArray; ?>)
         audioElement = new Audio();
         setTrack(currentPlaylist[0], currentPlaylist, false);
+        updateVolumeProgressBar(audioElement.audio);
 
-        $(".playbackBar .progressBar").mouseDown(() => {
+        $("#nowPlayingBarContainer").on("mousedown touchstart mousemove touchmove", (e) => {
+            e.preventDefault();
+        });
+
+        $(".playbackBar .progressBar").mousedown(() => {
             mouseDown = true;
-        })
+        });
 
-        $(".playbackBar .progressBar").mouseMove((e) => {
+        $(".playbackBar .progressBar").mouseup((e) => {
+            timeFromOffset(e, $(".playbackBar .progressBar"));
+            // console.log(this);
+        });
+
+        $(".playbackBar .progressBar").mousemove((e) => {
             if(mouseDown)
             {
-                // set time of song
+                timeFromOffset(e, $(".playbackBar .progressBar"));
             }
-        })
+        });
+
+        
+        $(".volumebar .progressBar").mousedown(() => {
+            mouseDown = true;
+        });
+
+        $(".volumebar .progressBar").mouseup((e) => {
+            volumeChange(e, $(".volumebar .progressBar"));
+            // console.log(this);
+        });
+
+        $(".volumebar .progressBar").mousemove((e) => {
+            if(mouseDown)
+            {
+                volumeChange(e, $(".volumebar .progressBar"));
+            }
+        });
+
+        $(document).mouseup(() => {
+            mouseDown = false;
+        });
     });
+
+    const volumeChange = (mouse, progressBar) => {
+        let percentage = mouse.offsetX / $(progressBar).width();
+        if(percentage <= 1 && percentage >= 0)
+        {
+            audioElement.audio.volume = percentage
+        }
+    }
+
+    const timeFromOffset = (mouse, progressBar) => {
+        let percentage = mouse.offsetX / $(progressBar).width() * 100;
+        // console.log(percentage, $(progressBar).width())
+        let seconds = audioElement.audio.duration * (percentage / 100);
+        audioElement.setTime(seconds);
+    }
 
     const setTrack = (trackId, newPlaylist, play) => {
         $.post('includes/handlers/ajax/getSongJson.php',{ songId: trackId }, (data) => {

@@ -19,6 +19,11 @@ const updateTimeProgressBar = (audio) => {
     $(".playbackBar .progress").css("width", progress + "%");
 }
 
+const updateVolumeProgressBar = (audio) => {
+    let volume = audio.volume * 100;
+    $(".volumebar .progress").css("width", volume + "%");
+}
+
 class Audio
 {
     currentPlaying;
@@ -36,6 +41,10 @@ class Audio
                 updateTimeProgressBar(this.audio);
             }
         });
+
+        this.audio.addEventListener('volumechange', () => {
+            updateVolumeProgressBar(this.audio);
+        });
     }
 
     setTrack = (track) => {
@@ -49,5 +58,9 @@ class Audio
 
     pause = () => {
         this.audio.pause();
+    }
+
+    setTime = (seconds ) => {
+        this.audio.currentTime = seconds;
     }
 }

@@ -95,6 +95,7 @@ body
 {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .progressTime
@@ -132,6 +133,7 @@ body
 .playbackBar .progressBar
 {
     margin-top: 8px;
+    width: 100%;
 }
 
 .albumArtwork
