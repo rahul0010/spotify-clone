@@ -1,6 +1,10 @@
 const currentPlaylist = new Array();
+const shufflePlaylist = new Array();
 var audioElement;
 var mouseDown = false;
+var currentIndex = 0;
+var repeat = false;
+var shuffle = false;
 
 const formatTime = (second) => {
     let time = Math.round(second)
@@ -44,6 +48,10 @@ class Audio
 
         this.audio.addEventListener('volumechange', () => {
             updateVolumeProgressBar(this.audio);
+        });
+
+        this.audio.addEventListener('ended',()=>{
+            nextSong();
         });
     }
 
