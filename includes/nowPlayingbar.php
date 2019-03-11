@@ -11,9 +11,10 @@
 <script>
     
     $(document).ready(()=>{
-        currentPlaylist.push(...<?php echo $jsonArray; ?>)
+        // currentPlaylist.push(...)
+        var newPlaylist = <?php echo $jsonArray; ?>;
         audioElement = new Audio();
-        setTrack(currentPlaylist[0], currentPlaylist, false);
+        setTrack(newPlaylist[0], newPlaylist, false);
         updateVolumeProgressBar(audioElement.audio);
 
         $("#nowPlayingBarContainer").on("mousedown touchstart mousemove touchmove", (e) => {
@@ -89,7 +90,7 @@
             currentIndex++;
         }
 
-        let trackToPlay = currentPlaylist[currentIndex];
+        let trackToPlay = shuffle ? shufflePlaylist[currentIndex] : currentPlaylist[currentIndex];
         setTrack(trackToPlay, currentPlaylist, true)
     }
 
@@ -126,10 +127,12 @@
         {
             // Randomise playlists
             shuffleArray(shuffleArray)
+            currentIndex = shufflePlaylist.indexOf(audioElement.currentPlaying.id);
         }
         else
         {
             //regular playlist
+            currentIndex = currentPlaylist.indexOf(audioElement.currentPlaying.id);
         }
     }
 
@@ -143,36 +146,7 @@
         }
     }
 
-    const setTrack = (trackId, newPlaylist, play) => {
-
-        if(newPlayList != currentPlaylist)
-        {
-            currentPlaylist = [...newPlayList];
-            shufflePlaylist = currentPlaylist.slice();
-            shuffleArray(shufflePlaylist);
-        }
-        currentIndex = currentPlaylist.indexOf(trackId);
-        $.post('includes/handlers/ajax/getSongJson.php',{ songId: trackId }, (data) => {
-            var track = JSON.parse(data);
-            $(".trackName span").text(track.title);
-            audioElement.setTrack(track);
-
-            $.post('includes/handlers/ajax/getArtistJson.php',{ artistId: track.artist }, (data) => {
-                var artist = JSON.parse(data);
-                $(".artist span").text(artist.name);
-            });
-
-            $.post('includes/handlers/ajax/getAlbumJson.php',{ albumId: track.album }, (data) => {
-                var album = JSON.parse(data);
-                $(".albumLink img").attr('src',album.artworkPath);
-            });
-            if(play)
-            {
-                audioElement.play();
-            }
-        });
-    }
-
+    
     const playSong = () => {
 
         if(audioElement.audio.currentTime == 0)
@@ -189,6 +163,45 @@
         $(".controlButton.play").show();
         audioElement.pause();
     }
+
+    const setTrack = (trackId, newPlaylist, play) => {
+        pauseSong();
+        if(newPlaylist != currentPlaylist)
+        {
+            currentPlaylist = [...newPlaylist];
+            shufflePlaylist = currentPlaylist.slice();
+            shuffleArray(shufflePlaylist);
+        }
+        if(shuffle)
+        {
+            currentIndex = shufflePlaylist.indexOf(trackId);
+        }
+        else
+        {
+            currentIndex = currentPlaylist.indexOf(trackId);
+        }
+
+        $.post('includes/handlers/ajax/getSongJson.php',{ songId: trackId }, (data) => {
+            var track = JSON.parse(data);
+            $(".trackName span").text(track.title);
+            audioElement.setTrack(track);
+
+            $.post('includes/handlers/ajax/getArtistJson.php',{ artistId: track.artist }, (data) => {
+                var artist = JSON.parse(data);
+                $(".artist span").text(artist.name);
+            });
+
+            $.post('includes/handlers/ajax/getAlbumJson.php',{ albumId: track.album }, (data) => {
+                var album = JSON.parse(data);
+                $(".albumLink img").attr('src',album.artworkPath);
+            });
+            if(play)
+            {
+                playSong();
+            }
+        });
+    }
+
 </script>
 
 <div id="nowPlayingBarContainer">

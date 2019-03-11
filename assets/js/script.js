@@ -1,5 +1,5 @@
-const currentPlaylist = new Array();
-const shufflePlaylist = new Array();
+var currentPlaylist = new Array();
+var shufflePlaylist = new Array();
 var audioElement;
 var mouseDown = false;
 var currentIndex = 0;
