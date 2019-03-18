@@ -30,6 +30,11 @@ class Song
     {
         return $this->title;
     }
+
+    public function getId()
+    {
+        return $this->id;
+    }
     
     public function getArtist()
     {
