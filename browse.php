@@ -6,7 +6,7 @@
 
 <div class="gridViewContainer">
     <?php
-        $albumQuery = mysqli_query($con, "select * from albums order by rand() limit 10");
+        $albumQuery = mysqli_query($con, "select * from albums");
 
         while($row = mysqli_fetch_array($albumQuery))
         {
